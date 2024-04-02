@@ -1,2 +1,2 @@
 # Species Occurrence Cube Portability
-### PRoject 9 at B-Cubed Hackathon 2024
+### Project 9 @ B-Cubed Hackathon 2024 - Hacking Biodiversity Data Cubes for Policy.
