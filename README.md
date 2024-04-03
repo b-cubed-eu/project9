@@ -11,7 +11,9 @@
 - Create an endpoint in sensorthings API? A standard for describing observations. (Ivette)
   
 > Stick to Open Geospatial Consortium standards. 
+
 > Open to any programming language.
+
 > Perfect solutions not expected.
 
 ### Notes
