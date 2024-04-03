@@ -100,7 +100,7 @@ if INPUT_PATH is None and ARGS["url"] is not None:
     ds.attrs["title"] = "GBIF Data Cube"
     ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
     ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    ds.attrs["source"] = URL
+    ds.attrs["source"] = URL | INPUT_PATH
     ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
             
     # Write the NetCDF file
@@ -140,7 +140,7 @@ else:
     ds.attrs["title"] = "GBIF Data Cube"
     ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
     ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    ds.attrs["source"] = URL
+    ds.attrs["source"] = URL | INPUT_PATH
     ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
 
     # Write the NetCDF file
