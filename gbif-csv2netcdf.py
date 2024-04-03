@@ -23,6 +23,7 @@ import argparse
 import wget
 import zipfile
 import shutil
+import time
 
 # Parse arguments
 parser = argparse.ArgumentParser(
@@ -97,6 +98,13 @@ if INPUT_PATH is None and ARGS["url"] is not None:
             ds = ds.assign_coords({dimension: df[var]})
             ds.drop_indexes("index", errors="raise")
             
+    # Add attributes to the NetCDF file
+    ds.attrs["title"] = "GBIF Data Cube"
+    ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
+    ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    ds.attrs["source"] = URL
+    ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
+            
     # Write the NetCDF file
     ds.to_netcdf(OUTPUT_PATH)
 
@@ -129,6 +137,13 @@ else:
             ds = ds.assign_coords({dimension: df[var]})
             # TODO: drop_indexes method is not working
             #ds.drop_indexes("index", errors="raise")
+    
+    # Add attributes to the NetCDF file
+    ds.attrs["title"] = "GBIF Data Cube"
+    ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
+    ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+    ds.attrs["source"] = URL
+    ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
 
     ds.to_netcdf(OUTPUT_PATH)
 
