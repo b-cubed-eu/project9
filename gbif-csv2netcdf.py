@@ -32,7 +32,6 @@ parser = argparse.ArgumentParser(
     epilog="This script was created at the B-Cubed Hackathon 2024.",
 )
 
-# TODO
 parser.add_argument(
     "-i", "--input", type=str, required=False, help="Path to local input CSV file"
 )
@@ -56,7 +55,6 @@ parser.add_argument(
     required=True,
     help="Path to output NetCDF file [required]",
 )
-
 
 # Parse the parameter string on the commandline into the args defined above
 ARGS = vars(parser.parse_args())
@@ -145,6 +143,7 @@ else:
     ds.attrs["source"] = URL
     ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
 
+    # Write the NetCDF file
     ds.to_netcdf(OUTPUT_PATH)
 
     print("\nNetCDF file written to", OUTPUT_PATH)
