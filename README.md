@@ -20,7 +20,7 @@
 ### Notes
 
 - **NetCDF**: 
-    - Script to convert from NetCDF to CSV is available as `gbif-csv2netcdf.py`.
+    - Script to convert from CSV to NetCDF4 is available as `gbif-csv2netcdf.py`.
     - The script can be used to convert a local CSV file or a download URL for a GBIF Cube to a NetCDF file.
     - The script has to be run from the command line and the arguments can be seen by running `python gbif-csv2netcdf.py -h`.
     - The script dependencies are in the `requirements.txt` file.
