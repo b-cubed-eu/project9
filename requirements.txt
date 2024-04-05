@@ -4,3 +4,4 @@ numpy
 netcdf4
 wget
 geopandas
+rioxarray

@@ -28,7 +28,7 @@
     - Sample GBIF Data Cube: https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip
 
 
-# DOCUMENTATION: gbif-csv2netcfd Converter #
+# DOCUMENTATION: gbif-csv2netcdf4 Converter #
 ### Description ###
 
 The gbif-csv2netcdf Converter is a Python-based utility designed to facilitate the transformation of biodiversity data from the GBIF (Global Biodiversity Information Facility) Data Cube format into the versatile NetCDF (Network Common Data Form) file format. This conversion process allows for more efficient storage, access, and analysis of large-scale environmental and biodiversity datasets. Developed during the B-Cubed Hackathon 2024, this tool stands as a pivotal development for researchers and scientists in the fields of ecology, climate science, and biodiversity conservation.
