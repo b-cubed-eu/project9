@@ -49,7 +49,7 @@ authors_short: Rodrigues et al.
 group: Project 9: Species Occurence Cube Portability
 event: B-Cubed Hackathon, Brussels, 2024
 biohackathon_name: B-Cubed Hackathon, Brussels, 2024
-biohackathon_url: https://alien-csi.eu/](https://b-cubed.eu/b-cubed-hackathon
+biohackathon_url: [https://b-cubed.eu/b-cubed-hackathon]
 biohackathon_location: Brussels, Belgium
 ---
 
