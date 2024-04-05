@@ -83,6 +83,13 @@ parser.add_argument(
     help="Digital Object Identifier (DOI) of the dataset",
 )
 
+parser.add_argument(
+    "--grid-code-column",
+    type=str,
+    required=False,
+    help="Name of the column containing the EEA grid cell code",
+)
+
 # Parse the parameter string on the commandline into the args defined above
 ARGS = vars(parser.parse_args())
 
@@ -94,29 +101,50 @@ DIMENSIONS = ARGS["dimensions"]
 COMPRESSION = ARGS["compression"]
 PROJECTION = ARGS["projection"]
 DOI = ARGS["doi"]
+GRID_CODE_COLUMN = ARGS["grid_code_column"]
 
 try:
-    # Extraxt the EAST coordinate
-    def extract_east_number(text):
-        numbers = re.findall(r'\d+', text)
-        if len(numbers) >= 2:
-            return int(numbers[1])  # Extract the second number
+
+    def extract_east_north(text, east_or_north):
+        """
+        Extracts the easting and northing values from a grid cell code, applying
+        a scaling factor based on whether the resolution is in kilometers or meters.
+
+        Parameters:
+        text (str): The grid cell code, e.g., '250mE1025N22000'.
+
+        Returns:
+        tuple: A tuple containing the scaled easting and northing values, or None if extraction fails.
+        """
+        # Determine the resolution unit and set the scaling factor
+        resolution_match = re.match(r"(\d+)(km|m)", text)
+        if resolution_match:
+            unit = resolution_match.group(2)
+            if unit == "km":
+                scaling_factor = 1000
+            elif unit == "m":
+                scaling_factor = 10
+            elif unit is None:
+                return None
+
+        else:
+            return None  # If the resolution unit is not found
+
+        # Extract the numerical parts of the code
+        numbers = re.findall(r"\d+", text)
+        if len(numbers) >= 3:  # Ensure there are enough parts in the code
+            easting = (
+                int(numbers[1]) * scaling_factor
+            )  # Apply scaling to the easting value
+            northing = (
+                int(numbers[2]) * scaling_factor
+            )  # Apply scaling to the northing value
+            if east_or_north == "east":
+                return easting 
+            if east_or_north == "north":
+                return northing
         else:
             return None
-        
-
-    # Extraxt the NORTH coordinate
-    def extract_north_number(text):
-        numbers = re.findall(r'\d+', text)
-        match = re.match(r'(\d+km|\d+m)', text)
-        if match:
-            return match.group(0)  # Returns the matched resolution part
-        if len(numbers) >= 2:
-            return int(numbers[2])  # Extract the second number
-        else:
-            return None
-
-
 
     # Check if the input file was not provided and the URL was
     if INPUT_PATH is None and ARGS["url"] is not None:
@@ -132,9 +160,20 @@ try:
         files = os.listdir("data")
 
         # Read the GBIF Data Cube
-        df = pd.read_csv(f"data/{files[0]}", encoding="utf-8", sep="\t", index_col=False)
-        
-        
+        df = pd.read_csv(
+            f"data/{files[0]}", encoding="utf-8", sep="\t", index_col=False
+        )
+
+        # Create Easting and Northing columns from the GRID_CODE_COLUMN
+        if GRID_CODE_COLUMN is not None:
+            df["easting"] = df[GRID_CODE_COLUMN].apply(
+                lambda x: extract_east_north(x, east_or_north= "east")
+            )
+            df["northing"] = df[GRID_CODE_COLUMN].apply(
+                lambda x: extract_east_north(x, east_or_north= "north")
+            )
+            print("\nEasting and Northing columns created")
+
 
         # Infer better dtypes for object columns
         dfn = df.infer_objects()
@@ -152,6 +191,10 @@ try:
                 var = str_var.strip()
                 print("\nAdding dimension", var)
                 ds = ds.assign_coords({dimension: df[var]})
+                if GRID_CODE_COLUMN is not None:
+                    ds = ds.assign_coords(
+                        {"easting": df["easting"], "northing": df["northing"]}
+                    )
                 ds.drop_indexes("index", errors="raise")
 
         # Add attributes to the NetCDF file
@@ -161,15 +204,18 @@ try:
         ds.attrs["source"] = URL or INPUT_PATH
         ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
         if DOI is not None:
+            print("\nAdding DOI", DOI)
             ds.attrs["doi"] = DOI
 
         # Add the projection to the NetCDF file
+        print("\nAdding projection", PROJECTION)
         ds.rio.write_crs(PROJECTION, inplace=True)
         ds.rio.write_grid_mapping(inplace=True)
 
         # Write the NetCDF file
         # Add compression to the NetCDF file
         if ARGS["compression"]:
+            print("\nAdding compression to the NetCDF file")
             comp = dict(compression="zlib", complevel=5)
             encode = {var: comp for var in ds.data_vars}
             ds.to_netcdf(OUTPUT_PATH, encoding=encode)
@@ -182,13 +228,23 @@ try:
         os.remove("data.zip")
         shutil.rmtree("data")
 
-
     # If the input file was provided, read the file
     else:
         print("\nReading GBIF Data Cube from", INPUT_PATH)
 
         # Read the GBIF Data Cube
         df = pd.read_csv(INPUT_PATH, encoding="utf-8", sep="\t", index_col=False)
+
+        # Create Easting and Northing columns from the GRID_CODE_COLUMN
+        if GRID_CODE_COLUMN is not None:
+            df["easting"] = df[GRID_CODE_COLUMN].apply(
+                lambda x: extract_east_north(x, east_or_north= "east")
+            )
+            df["northing"] = df[GRID_CODE_COLUMN].apply(
+                lambda x: extract_east_north(x, east_or_north= "north")
+            )
+            print("\nEasting and Northing columns created")
+            
 
         # Infer better dtypes for object columns
         dfn = df.infer_objects()
@@ -206,6 +262,10 @@ try:
                 var = str_var.strip()
                 print("\nAdding dimension", var)
                 ds = ds.assign_coords({dimension: df[var]})
+                if GRID_CODE_COLUMN is not None:
+                    ds = ds.assign_coords(
+                        {"easting": df["easting"], "northing": df["northing"]}
+                    )
                 # TODO: drop_indexes method is not working
                 # ds.drop_indexes("index", errors="raise")
 
@@ -227,6 +287,7 @@ try:
         # Write the NetCDF file
         # Add compression to the NetCDF file
         if ARGS["compression"]:
+            print("\nAdding compression to the NetCDF file")
             comp = dict(compression="zlib", complevel=5)
             encode = {var: comp for var in ds.data_vars}
             ds.to_netcdf(OUTPUT_PATH, encoding=encode)
@@ -245,43 +306,3 @@ except:
     os.remove(OUTPUT_PATH)
     print("Exiting the program")
     exit(1)
-    
-    
-    
-    import re
-
-def extract_east_north(text):
-    """
-    Extracts the easting and northing values from a grid cell code, applying
-    a scaling factor based on whether the resolution is in kilometers or meters.
-    
-    Parameters:
-    text (str): The grid cell code, e.g., '250mE1025N22000'.
-    
-    Returns:
-    tuple: A tuple containing the scaled easting and northing values, or None if extraction fails.
-    """
-    # Determine the resolution unit and set the scaling factor
-    resolution_match = re.match(r'(\d+)(km|m)', text)
-    if resolution_match:
-        unit = resolution_match.group(2)
-        if unit == "km"
-            scaling_factor = 1000 
-        elif unit == "m" 10
-    else:
-        return None  # If the resolution unit is not found
-    
-    # Extract the numerical parts of the code
-    numbers = re.findall(r'\d+', text)
-    if len(numbers) >= 3:  # Ensure there are enough parts in the code
-        easting = int(numbers[1]) * scaling_factor  # Apply scaling to the easting value
-        northing = int(numbers[2]) * scaling_factor  # Apply scaling to the northing value
-        return easting, northing
-    else:
-        return None
-
-# Example usage
-codes = ["250mE1025N22000", "1kmE5432N4321"]
-for code in codes:
-    east_north = extract_east_north(code)
-    print(f"Code: {code}, Easting/Northing with Scaling: {east_north}")

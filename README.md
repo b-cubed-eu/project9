@@ -28,12 +28,12 @@
     - Sample GBIF Data Cube: https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip
 
 
-# DOCUMENTATION: gbif-csv2netcdf4 Converter #
-### Description ###
+# Documentation: gbif-csv2netcdf4 Converter #
+# Description #
 
 The gbif-csv2netcdf Converter is a Python-based utility designed to facilitate the transformation of biodiversity data from the GBIF (Global Biodiversity Information Facility) Data Cube format into the versatile NetCDF (Network Common Data Form) file format. This conversion process allows for more efficient storage, access, and analysis of large-scale environmental and biodiversity datasets. Developed during the B-Cubed Hackathon 2024, this tool stands as a pivotal development for researchers and scientists in the fields of ecology, climate science, and biodiversity conservation.
 
-## Workflow ##
+# Workflow #
 
 The script operates by either downloading a GBIF Data Cube from a specified URL or reading an existing local CSV file that was extracted from the GBIF database. Once the data cube is obtained, it processes the data to fit into the NetCDF format, enabling the use of dimensions for more organized and accessible data. The output is a NetCDF file that contains all the original data, now ready for analysis and visualization with tools that support this format.
 
@@ -69,11 +69,14 @@ Example:
     -p, --projection: Projection to be used in the NetCDF file (default =  "EPSG:3035").
     -doi, --doi: Digital Object Identifier (DOI) for the NetCDF file.
     -c, --compression: Enable or disable compression for the NetCDF file (True or False).
+    --grid-code-column: Specifies the column name for EEA grid
 
-About NetCDF File Format
+# About NetCDF File Format #
 
 NetCDF (Network Common Data Form) is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data. This format is widely used in the scientific community for storing and distributing scientific data. It is particularly suited for handling large volumes of data in a way that is efficient both in terms of storage and computational access.
 Data Cubes Concept
+
+# About Data Cubes #
 
 Data Cubes are a method of structuring data in multiple dimensions (usually three or more) to enable efficient querying and analysis. This concept is especially useful in the field of remote sensing, climate and environmental data analysis, and GIS applications, where data is inherently multi-dimensional (e.g., spatial, temporal, and spectral dimensions). Data cubes facilitate complex data analysis tasks, such as trend analysis over time or spatial pattern recognition, by providing a structured and intuitive way to handle multidimensional datasets.
 
@@ -85,4 +88,7 @@ General Information
     Dependencies: xarray, numpy, pandas, wget, zipfile, shutil, time, geopandas
     Sample Dataset: https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip
 
-This README provides a comprehensive guide on how to use the GBIF-netCDF4 Converter tool, aiming to make biodiversity data more accessible and manageable for scientific research and analysis.
+# Documentation: gbif-2geotiff Converter #
+### Description ###
+@vitalii you can add your documentation part here!
+
