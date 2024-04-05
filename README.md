@@ -84,5 +84,3 @@ General Information
     Python Version Required: 3.11.7
     Dependencies: xarray, numpy, pandas, wget, zipfile, shutil, time, geopandas
     Sample Dataset: https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip
-
-This README provides a comprehensive guide on how to use the GBIF-netCDF4 Converter tool, aiming to make biodiversity data more accessible and manageable for scientific research and analysis.
