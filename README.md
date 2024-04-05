@@ -43,9 +43,32 @@ The script operates by either downloading a GBIF Data Cube from a specified URL 
 
 Steps:
 
-    Preparation: Ensure Python 3.11.7 is installed, and set up a virtual environment.
-    Installation: Install required dependencies as listed in the requirements.txt file.
-    Execution: Run the script with the appropriate command-line arguments to specify the input source (URL or local file), dimensions, output path, projection, and a digital object identifier (doi).
+Preparation: Ensure Python 3.11.7 is installed, and set up a virtual environment.
+
+    pip -m venv venv && source venv/bin/activate
+
+Installation: Install required dependencies as listed in the requirements.txt file.
+
+    pip install -r requirements.txt
+
+
+Execution: Run the script with the appropriate command-line arguments to specify the input source (URL or local file), dimensions, output path, projection, and a digital object identifier (doi).
+
+    python gbif-csv2netcdf.py -i <input_path> -u <url> -d <dimensions> -o <output> -p <projection> -doi <doi> -c <compression>
+
+Example:
+    
+        python gbif-csv2netcdf.py -u https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip -d "time,lat,lon" -o output.nc -p EPSG:3035 -doi 10.5281/zenodo.123456 -c True
+
+**Argument types and definitions**
+
+    -i, --input: Path to the local CSV file to be converted to NetCDF.
+    -u, --url: URL to download the GBIF Data Cube in ZIP format.
+    -d, --dimensions: Dimensions to be used in the NetCDF file (e.g., "time,lat,lon").
+    -o, --output: Path to the output NetCDF file.
+    -p, --projection: Projection to be used in the NetCDF file (default =  "EPSG:3035").
+    -doi, --doi: Digital Object Identifier (DOI) for the NetCDF file.
+    -c, --compression: Enable or disable compression for the NetCDF file (True or False).
 
 About NetCDF File Format
 
@@ -60,6 +83,6 @@ General Information
     License: MIT
     Python Version Required: 3.11.7
     Dependencies: xarray, numpy, pandas, wget, zipfile, shutil, time, geopandas
-    Sample Dataset: GBIF Data Cube Sample
+    Sample Dataset: https://api.gbif.org/v1/occurrence/download/request/0000025-240314170635999.zip
 
 This README provides a comprehensive guide on how to use the GBIF-netCDF4 Converter tool, aiming to make biodiversity data more accessible and manageable for scientific research and analysis.
