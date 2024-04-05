@@ -3,3 +3,4 @@ pandas
 numpy
 netcdf4
 wget
+geopandas

@@ -13,7 +13,6 @@
 # ==============================================================================
 
 
-
 # Import required libraries
 import xarray as xr
 import numpy as np
@@ -24,6 +23,7 @@ import wget
 import zipfile
 import shutil
 import time
+import geopandas as gpd
 
 # Parse arguments
 parser = argparse.ArgumentParser(
@@ -56,6 +56,31 @@ parser.add_argument(
     help="Path to output NetCDF file [required]",
 )
 
+parser.add_argument(
+    "-c",
+    "--compression",
+    type=bool,
+    required=False,
+    default=True,
+    help="Enable compression for the NetCDF file [default: True]",
+)
+
+parser.add_argument(
+    "-proj",
+    "--projection",
+    type=str,
+    required=True,
+    default="EPSG:3035",
+    help="EPSG code for the projection of the NetCDF file [required, default: EPSG:3035]",
+)
+
+parser.add_argument(
+    "-doi",
+    type=str,
+    required=False,
+    help="Digital Object Identifier (DOI) of the dataset",
+)
+
 # Parse the parameter string on the commandline into the args defined above
 ARGS = vars(parser.parse_args())
 
@@ -64,25 +89,32 @@ INPUT_PATH = ARGS["input"]
 OUTPUT_PATH = ARGS["output"]
 URL = ARGS["url"]
 DIMENSIONS = ARGS["dimensions"]
+COMPRESSION = ARGS["compression"]
+PROJECTION = ARGS["projection"]
+DOI = ARGS["doi"]
+
 
 # Check if the input file was not provided and the URL was
 if INPUT_PATH is None and ARGS["url"] is not None:
     print("Downloading GBIF Data Cube from", ARGS["url"])
     # Download the GBIF Data Cube
     wget.download(ARGS["url"], "data.zip")
-    
+
     # Extract the zip file
-    with zipfile.ZipFile("data.zip", 'r') as zip_ref:
+    with zipfile.ZipFile("data.zip", "r") as zip_ref:
         zip_ref.extractall("data")
-        
+
     # Get paths of files inside the data folder
-    files = os.listdir("data") 
+    files = os.listdir("data")
 
     # Read the GBIF Data Cube
     df = pd.read_csv(f"data/{files[0]}", encoding="utf-8", sep="\t", index_col=False)
 
+    # Infer better dtypes for object columns
+    dfn = df.infer_objects()
+
     # Write the GBIF Data Cube to a NetCDF file
-    ds = xr.Dataset.from_dataframe(df)
+    ds = xr.Dataset.from_dataframe(dfn)
 
     # Add dimensions to ds from the DIMENSIONS variable
     if DIMENSIONS is not None:
@@ -95,22 +127,33 @@ if INPUT_PATH is None and ARGS["url"] is not None:
             print("\nAdding dimension", var)
             ds = ds.assign_coords({dimension: df[var]})
             ds.drop_indexes("index", errors="raise")
-            
+
     # Add attributes to the NetCDF file
     ds.attrs["title"] = "GBIF Data Cube"
     ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
     ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    ds.attrs["source"] = URL | INPUT_PATH
+    ds.attrs["source"] = URL or INPUT_PATH
     ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
-            
+    if DOI is not None:
+        ds.attrs["doi"] = DOI
+
+    # Add the projection to the NetCDF file
+    ds = ds.rio.write_crs(PROJECTION, inplace=True)
+
     # Write the NetCDF file
-    ds.to_netcdf(OUTPUT_PATH)
+    # Add compression to the NetCDF file
+    if ARGS["compression"]:
+        comp = dict(compression="zlib", complevel=5)
+        encode = {var: comp for var in ds.data_vars}
+        ds.to_netcdf(OUTPUT_PATH, encoding=encode)
+    else:
+        ds.to_netcdf(OUTPUT_PATH)
 
     print("\nNetCDF file written to", OUTPUT_PATH)
-    
+
     # Remove the zip file and the data folder
     os.remove("data.zip")
-    shutil.rmtree("data") 
+    shutil.rmtree("data")
 
 
 # If the input file was provided, read the file
@@ -120,8 +163,11 @@ else:
     # Read the GBIF Data Cube
     df = pd.read_csv(INPUT_PATH, encoding="utf-8", sep="\t", index_col=False)
 
+    # Infer better dtypes for object columns
+    dfn = df.infer_objects()
+
     # Write the GBIF Data Cube to a NetCDF file
-    ds = xr.Dataset.from_dataframe(df)
+    ds = xr.Dataset.from_dataframe(dfn)
 
     # Add dimensions to ds from the DIMENSIONS variable
     if DIMENSIONS is not None:
@@ -134,16 +180,29 @@ else:
             print("\nAdding dimension", var)
             ds = ds.assign_coords({dimension: df[var]})
             # TODO: drop_indexes method is not working
-            #ds.drop_indexes("index", errors="raise")
-    
+            # ds.drop_indexes("index", errors="raise")
+
     # Add attributes to the NetCDF file
     ds.attrs["title"] = "GBIF Data Cube"
     ds.attrs["authors"] = ["Paul Holzschuh", "Luis Maecker", "Taimur Khan"]
     ds.attrs["created_on"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-    ds.attrs["source"] = URL | INPUT_PATH
+    ds.attrs["source"] = URL or INPUT_PATH
     ds.attrs["history"] = "Created using code from the B-Cubed Hackathon 2024"
+    if DOI is not None:
+        ds.attrs["doi"] = DOI
+
+    # Add the projection to the NetCDF file
+    ds = ds.rio.write_crs(PROJECTION, inplace=True)
 
     # Write the NetCDF file
-    ds.to_netcdf(OUTPUT_PATH)
+    # Add compression to the NetCDF file
+    if ARGS["compression"]:
+        comp = dict(compression="zlib", complevel=5)
+        encode = {var: comp for var in ds.data_vars}
+        ds.to_netcdf(OUTPUT_PATH, encoding=encode)
+
+    else:
+        ds.to_netcdf(OUTPUT_PATH)
+    ds.to_netcdf(OUTPUT_PATH, encoding=encode)
 
     print("\nNetCDF file written to", OUTPUT_PATH)
