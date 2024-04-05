@@ -1,4 +1,8 @@
-# Species Occurrence Cube Portability
+ <div align="center" style="text-align:center">
+  <img width="30%" src="logo.gif" />
+  <br/>
+  <h1> GBIF-Cubes: Species Occurrence Cube Portability</h1>  
+</div>
 
 ### Project 9 @ B-Cubed Hackathon 2024 - Hacking Biodiversity Data Cubes for Policy.
 
@@ -91,4 +95,3 @@ General Information
 # Documentation: gbif-2geotiff Converter #
 ### Description ###
 @vitalii you can add your documentation part here!
-

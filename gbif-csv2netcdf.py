@@ -23,8 +23,8 @@ import wget
 import zipfile
 import shutil
 import time
+import rioxarray as rio
 import geopandas as gpd
-import rioxarray as rxr
 import re
 
 # Parse arguments
