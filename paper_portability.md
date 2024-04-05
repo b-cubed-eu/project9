@@ -46,10 +46,10 @@ affiliations:
 date: 05. April 2024
 bibliography: paper.bib
 authors_short: Rodrigues et al.
-group: Isodontia mexicana
+group: Project 9: Species Occurence Cube Portability
 event: B-Cubed Hackathon, Brussels, 2024
-biohackathon_name: Alien-CSI Hackathon, Brussels, 2024
-biohackathon_url: https://alien-csi.eu/
+biohackathon_name: B-Cubed Hackathon, Brussels, 2024
+biohackathon_url: https://alien-csi.eu/](https://b-cubed.eu/b-cubed-hackathon
 biohackathon_location: Brussels, Belgium
 ---
 
