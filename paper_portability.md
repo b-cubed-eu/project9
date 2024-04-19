@@ -46,27 +46,36 @@ affiliations:
 date: 05. April 2024
 bibliography: paper.bib
 authors_short: Rodrigues et al.
-group: Project 9: Species Occurence Cube Portability
+group: Species occurence cube portability
 event: B-Cubed Hackathon, Brussels, 2024
-biohackathon_name: B-Cubed Hackathon, Brussels, 2024
-biohackathon_url: [https://b-cubed.eu/b-cubed-hackathon]
+biohackathon_name: Alien-CSI Hackathon, Brussels, 2024
+biohackathon_url: https://alien-csi.eu/
 biohackathon_location: Brussels, Belgium
 ---
 
 # Introduction
 
-The ability to handle spatio-temporal biodiversity data is critical if we are to effectively monitor trends in biodiversity over time. Data cubes have become a standard within the atmospheric sciences, where the Network Common Data Form - NetCDF - allow users to slice data in whichever dimensions the user demands and come with well developed metadata standards.  They and have become a standard for the calculation of Essential Climate Variables that are used in climate reporting and monitoring. With similar approaches being adopted by the biodiversity community in the form of Essential Biodiversity Variables - those key components of biodiversity that can be used to elucidate biodiversity patterns and trends - calculation of these variables requires that biodiversity data is packaged in a similar way that allows for its interoperability with other relevant environmental datasets to allow the complex geospatial analyses required.  
+The increasing recognition of the need for Essential Biodiversity Variables (EBVs), a set of key components of biodiversity, which when monitored should allow for the tracking of the status of all the elements of biodiversity, requires that biodiversity data is provided in a format that allows for the easy combination with sensor-detected environmental variables. Data cubes have become a standard within the atmospheric sciences for the calculation of Essential Climate Variables (ECVs) the climate equivalent of EBVs used for climate reporting, where the Network Common Data Form (Unidata, 2023) - NetCDF - has become the standard format for storing this type of data.  NetCDFs can store multidimensional data such as temperature, wind speed, salinity, pH in the form of array that can then be diplayed through a dimension such as time.  The format is self-describing with the file containing information about the data it contains and portable allowing computer with different ways of storing integers, characters and floating point numbers to access the file. 
 
-GBIF - the Global Biodiversity Information Facility - currently provides its three download options - simple, Darwin Core Archive and Species List - as tab delimited CSVs and will provide its newest download format the "data cube" format in the same format. These new aggregated data cube formats that aggregate measures of biodiversity, typically species occurrence counts, using user-specified grids. CSV is a data exchange format for tabular data that is most commonly used for the exchange of data between database and spreadsheet programs and does not lend itself to these new data cubes where formats that rasterize the data may be more appropriate.
+GBIF - the Global Biodiversity Information Facility - currently provides users to the ability to search and query its database using user-defined filters via its APIs that allow for download occurrence data or species lists as tab delimited CSVs. GBIF aims to provide its data in a cube-like format allowing users to aggregate species occurrence counts using user defined dimensions and user-specified grids. These data will then be provided to users in a CSV format. CSV is a data exchange format for tabular data that is most commonly used for the exchange of data between database and spreadsheet programs and does not lend itself to these new data cubes where formats that better handle raster data may be more appropriate.
 
 In this project, we aimed to provide a python package that allows users to create cube downloads in NetCDF and ensure that the new GBIF data cubes could be more efficently used in the calculation of Essential Biodievrsity Variables.  We also wanted to explore the production of these cubes in other formats starting with GeoTIFF and Cloud-Optimized GeoTIFF (COG), the TIFF format a commonly used format in geospatial analyses for raster data.  We also wanted to explore user needs by surveying data cube users at the B-Cubed Hackathon to develop a prioritized selection of data formats that should be considered for developement in the future. 
 
-## ...... Package
-
-
-
 ## Survey Results
+Partipants at the B-cubed Hackathon were asked to complete a survey during the hackathon to identify potential data formats to be made available for as wide a set of users as possible.  The survey consisted of 11 questions aimed to determine levels of familiarity with the use of data cubes and preferred data formats. We received 20 complete survey responses. 
+
+
 ### 
+
+
+## gbif-csv2netcdf4 Converter
+
+The gbif-csv2netcdf Converter is a Python-based utility designed to facilitate the transformation of biodiversity data from the GBIF (Global Biodiversity Information Facility) Data Cube format into the versatile NetCDF (Network Common Data Form) file format. This conversion process allows for more efficient storage, access, and analysis of large-scale environmental and biodiversity datasets. Developed during the B-Cubed Hackathon 2024, this tool stands as a pivotal development for researchers and scientists in the fields of ecology, climate science, and biodiversity conservation.
+
+The script operates by either downloading a GBIF Data Cube from a specified URL or reading an existing local CSV file that was extracted from the GBIF database. Once the data cube is obtained, it processes the data to fit into the NetCDF format, enabling the use of dimensions for more organized and accessible data. The output is a NetCDF file that contains all the original data, now ready for analysis and visualization with tools that support this format.
+
+
+
 
 
 ## Discussion and conclusions
@@ -76,8 +85,7 @@ In this project, we aimed to provide a python package that allows users to creat
 # Acknowledgements
 
 # References
-
-
-
-
+H. M. Pereira et al., Essential Biodiversity Variables.Science339,277-278(2013).DOI:10.1126/science.1229931
+Unidata,2024: NetCDF Users Guide  v1.1. Boulder, CO: UCAR/Unidata Program Center. https://doi.org/10.5065/D6H70CW6
+https://techdocs.gbif.org/en/data-use/data-cubes
 
