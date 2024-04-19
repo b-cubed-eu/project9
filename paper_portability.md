@@ -62,7 +62,16 @@ GBIF - the Global Biodiversity Information Facility - currently provides users t
 In this project, we aimed to provide a python package that allows users to create cube downloads in NetCDF and ensure that the new GBIF data cubes could be more efficently used in the calculation of Essential Biodievrsity Variables.  We also wanted to explore the production of these cubes in other formats starting with GeoTIFF and Cloud-Optimized GeoTIFF (COG), the TIFF format a commonly used format in geospatial analyses for raster data.  We also wanted to explore user needs by surveying data cube users at the B-Cubed Hackathon to develop a prioritized selection of data formats that should be considered for developement in the future. 
 
 ## Survey Results
-Partipants at the B-cubed Hackathon were asked to complete a survey during the hackathon to identify potential data formats to be made available for as wide a set of users as possible.  The survey consisted of 11 questions aimed to determine levels of familiarity with the use of data cubes and preferred data formats. We received 20 complete survey responses. 
+27 B-cubed hackathon participants attempted to complete the survey of 11 questions (Appendix 1), 20 of which completed the survey.  Dependent on the question, reponses could be single choice, multiple choice and free text meaning that summmed responses for some questions were over 20 responses.  The top research areas of participants were in ecology and biodiversity studies and informatics and over fifty percent had had no experience using data cubes in the past.  
+
+![image](https://github.com/b-cubed-eu/project9/assets/31403807/5b51f95f-4ab4-453e-bea8-a43901c89771)
+
+
+![image](https://github.com/b-cubed-eu/project9/assets/31403807/21e4af02-2eb3-40d0-9594-1400de9f2199)
+
+Of those with no experience of data cubes, when asked why they had had no experience, responses included a lack of time, lack of knowledge of the existence of data cubes or a lack of understanding of the relevance of cubes to their work. 
+
+![image](https://github.com/b-cubed-eu/project9/assets/31403807/3e82f521-56d7-4904-bb9f-3d7e87a391ff)
 
 
 ### 
@@ -83,6 +92,10 @@ The script operates by either downloading a GBIF Data Cube from a specified URL 
 
 
 # Acknowledgements
+
+# Appendix 1
+[GBIF.data.cube.survey_survey.outline.pdf](https://github.com/b-cubed-eu/project9/files/15039662/GBIF.data.cube.survey_survey.outline.pdf)
+
 
 # References
 H. M. Pereira et al., Essential Biodiversity Variables.Science339,277-278(2013).DOI:10.1126/science.1229931
