@@ -75,6 +75,7 @@ Of those who had some familiarity with data cubes (12/26 respondents), 4 replied
 
 ![image](https://github.com/b-cubed-eu/project9/assets/31403807/3e82f521-56d7-4904-bb9f-3d7e87a391ff)
 
+The top 5 formats that were identified by all participants as preferred formats for species occurrence data cube in ranked order were: CSV, NetCDF, GeoTIFF and GeoJSON and Shapefile. 
 
 ### 
 
@@ -84,9 +85,6 @@ Of those who had some familiarity with data cubes (12/26 respondents), 4 replied
 The gbif-csv2netcdf Converter is a Python-based utility designed to facilitate the transformation of biodiversity data from the GBIF (Global Biodiversity Information Facility) Data Cube format into the versatile NetCDF (Network Common Data Form) file format. This conversion process allows for more efficient storage, access, and analysis of large-scale environmental and biodiversity datasets. Developed during the B-Cubed Hackathon 2024, this tool stands as a pivotal development for researchers and scientists in the fields of ecology, climate science, and biodiversity conservation.
 
 The script operates by either downloading a GBIF Data Cube from a specified URL or reading an existing local CSV file that was extracted from the GBIF database. Once the data cube is obtained, it processes the data to fit into the NetCDF format, enabling the use of dimensions for more organized and accessible data. The output is a NetCDF file that contains all the original data, now ready for analysis and visualization with tools that support this format.
-
-
-
 
 
 ## Discussion and conclusions
