@@ -71,6 +71,8 @@ In this project, we aimed to provide a python package that allows users to creat
 
 Of those with no experience of data cubes, when asked why they had had no experience, responses included a lack of time, lack of knowledge of the existence of data cubes or a lack of understanding of the relevance of cubes to their work. 
 
+Of those who had some familiarity with data cubes (12/26 respondents), 4 replied that had been using NetCDF formats, 2 with Zarr formats, 5 with CSV, 2 with GeoTIFF, 2 with Cloud-Optimised GeoTIFF (COG), 1 with TIFF and 1 with xarray. Reasons for using these formats included their portability, high computational performance, software compatability, availability and frequency of use among collaborators.
+
 ![image](https://github.com/b-cubed-eu/project9/assets/31403807/3e82f521-56d7-4904-bb9f-3d7e87a391ff)
 
 
