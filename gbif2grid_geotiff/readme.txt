@@ -11,4 +11,4 @@ curl -Ss https://api.gbif.org/v1/occurrence/download/{download-code}
 # for example:
 curl -Ss https://api.gbif.org/v1/occurrence/download/0019637-240626123714530
 
-4. # run 2_gridding.py and analyse output in band 2 in the /output directory
+4. # run 2_gridding.py and analyse output in band 2 in the /output directory. Reprojected occurrence data are recorded into the same grid as band 1.
